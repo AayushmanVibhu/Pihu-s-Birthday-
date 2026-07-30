@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pihu's Birthday Mission</title>
+  <style>
+    :root {
+      --pink: #ff78ad;
+      --soft-pink: #ffd8e8;
+      --red: #e83b4f;
+      --blue: #183d7a;
+      --night: #091226;
+      --cream: #fff8f0;
+      --text: #221b2e;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; font-family: Inter, ui-rounded, system-ui, sans-serif; }
+    body {
+      overflow-x: hidden;
+      color: white;
+      background: radial-gradient(circle at top, #243f76 0%, var(--night) 54%, #050812 100%);
+    }
+
+    button { font: inherit; }
+    .hidden { display: none !important; }
+
+    .stars, .stars::before, .stars::after {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      content: "";
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,.9) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255,255,255,.5) 1px, transparent 1px);
+      background-size: 72px 72px, 113px 113px;
+      background-position: 0 0, 30px 20px;
+      opacity: .42;
+      animation: drift 24s linear infinite;
+    }
+    .stars::before { transform: scale(1.3); opacity: .25; animation-duration: 40s; }
+    .stars::after { transform: scale(.8); opacity: .2; animation-duration: 18s; }
+    @keyframes drift { to { background-position: 240px 160px, -160px 220px; } }
+
+    .screen {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      width: min(760px, 94vw);
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(9, 18, 38, .76);
+      backdrop-filter: blur(16px);
+      border-radius: 30px;
+      padding: clamp(24px, 5vw, 52px);
+      box-shadow: 0 28px 90px rgba(0,0,0,.45);
+      text-align: center;
+    }
+
+    .eyebrow {
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      font-size: .78rem;
+      color: #ffd0e4;
+      margin-bottom: 14px;
+    }
+
+    h1 { font-size: clamp(2.3rem, 8vw, 5.2rem); line-height: .95; margin: 0 0 18px; }
+    h2 { font-size: clamp(1.8rem, 5vw, 3.3rem); margin: 0 0 12px; }
+    p { line-height: 1.65; color: rgba(255,255,255,.82); }
+
+    .primary, .secondary {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 22px;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .primary {
+      background: linear-gradient(135deg, var(--pink), #ff4f77);
+      color: white;
+      font-weight: 800;
+      box-shadow: 0 12px 30px rgba(255, 79, 119, .28);
+    }
+    .secondary { background: rgba(255,255,255,.1); color: white; }
+    .primary:hover, .secondary:hover { transform: translateY(-2px) scale(1.02); }
+
+    .characters { display: flex; justify-content: center; align-items: end; gap: 24px; margin: 28px 0; }
+    .hero, .kitty { position: relative; width: 105px; height: 150px; }
+    .hero .head { width: 68px; height: 74px; background: var(--red); border-radius: 45% 45% 48% 48%; margin: auto; border: 3px solid #111; position: relative; }
+    .hero .head::before, .hero .head::after { content: ""; position: absolute; top: 24px; width: 18px; height: 30px; background: white; border: 3px solid #111; border-radius: 70% 20%; transform: rotate(-15deg); }
+    .hero .head::before { left: 10px; }
+    .hero .head::after { right: 10px; transform: scaleX(-1) rotate(-15deg); }
+    .hero .body { width: 82px; height: 79px; margin: -3px auto 0; border-radius: 22px 22px 16px 16px; background: linear-gradient(90deg, var(--blue) 0 25%, var(--red) 25% 75%, var(--blue) 75%); border: 3px solid #111; }
+
+    .kitty .head { width: 96px; height: 82px; background: white; border: 3px solid #222; border-radius: 48%; margin: auto; position: relative; }
+    .kitty .head::before, .kitty .head::after { content: ""; position: absolute; top: -18px; width: 30px; height: 35px; background: white; border: 3px solid #222; transform: rotate(45deg); z-index: -1; }
+    .kitty .head::before { left: 7px; }
+    .kitty .head::after { right: 7px; }
+    .kitty .eyes::before, .kitty .eyes::after { content: ""; position: absolute; top: 36px; width: 7px; height: 11px; background: #222; border-radius: 50%; }
+    .kitty .eyes::before { left: 28px; } .kitty .eyes::after { right: 28px; }
+    .kitty .nose { position: absolute; width: 10px; height: 7px; background: #ffd23f; border: 1px solid #222; border-radius: 50%; top: 50px; left: 41px; }
+    .bow { position: absolute; right: -10px; top: 7px; width: 32px; height: 24px; background: var(--pink); border-radius: 55% 25%; transform: rotate(12deg); }
+    .bow::after { content: ""; position: absolute; width: 32px; height: 24px; background: var(--pink); border-radius: 25% 55%; left: -25px; }
+    .kitty .body { width: 72px; height: 68px; margin: -2px auto; background: var(--pink); border: 3px solid #222; border-radius: 24px 24px 12px 12px; }
+
+    #gameScreen { align-items: start; padding-top: 26px; }
+    .game-shell { width: min(980px, 96vw); }
+    .hud { display: flex; justify-content: space-between; gap: 14px; align-items: center; margin-bottom: 14px; }
+    .pill { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.16); padding: 10px 14px; border-radius: 999px; }
+
+    .world {
+      position: relative;
+      height: min(70vh, 610px);
+      min-height: 470px;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.16);
+      background:
+        linear-gradient(to top, rgba(4,10,25,.35), transparent 50%),
+        linear-gradient(#172b55 0 58%, #16213d 58% 100%);
+      box-shadow: 0 24px 80px rgba(0,0,0,.36);
+    }
+
+    .moon { position: absolute; width: 115px; height: 115px; border-radius: 50%; background: #fff7cb; right: 8%; top: 7%; box-shadow: 0 0 50px rgba(255,247,203,.3); }
+    .city { position: absolute; left: 0; right: 0; bottom: 70px; height: 46%; display: flex; align-items: end; gap: 4px; opacity: .75; }
+    .building { flex: 1; min-width: 35px; background: #0d1730; border-radius: 5px 5px 0 0; position: relative; }
+    .building::after { content: ""; position: absolute; inset: 12px 8px; background: repeating-linear-gradient(90deg, #f8cd67 0 5px, transparent 5px 13px), repeating-linear-gradient(#f8cd67 0 5px, transparent 5px 17px); opacity: .36; }
+    .ground { position: absolute; left: 0; right: 0; bottom: 0; height: 92px; background: linear-gradient(#26375a, #121a2d); border-top: 3px solid rgba(255,255,255,.08); }
+
+    #player { position: absolute; left: 40px; bottom: 82px; width: 54px; height: 72px; transition: left .09s linear, bottom .09s linear; z-index: 4; }
+    #player::before { content: "🕷️"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 47px; filter: drop-shadow(0 8px 8px rgba(0,0,0,.4)); }
+
+    .memory {
+      position: absolute;
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      font-size: 32px;
+      cursor: pointer;
+      z-index: 3;
+      animation: float 2s ease-in-out infinite;
+      filter: drop-shadow(0 8px 9px rgba(0,0,0,.35));
+    }
+    @keyframes float { 50% { transform: translateY(-10px); } }
+    .memory.collected { opacity: 0; pointer-events: none; transform: scale(.2); transition: .35s ease; }
+
+    .finish { position: absolute; right: 32px; bottom: 88px; width: 82px; height: 92px; display: grid; place-items: end center; font-size: 56px; z-index: 3; }
+    .finish::after { content: "Pihu"; position: absolute; top: -18px; font-size: .72rem; background: var(--pink); padding: 4px 9px; border-radius: 999px; }
+
+    .controls { display: flex; justify-content: center; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+    .control-btn { width: 58px; height: 48px; border: 0; border-radius: 15px; background: rgba(255,255,255,.12); color: white; cursor: pointer; font-size: 1.2rem; }
+
+    .modal { position: fixed; inset: 0; background: rgba(2,5,13,.72); display: grid; place-items: center; z-index: 20; padding: 22px; }
+    .memory-card { width: min(500px, 92vw); background: var(--cream); color: var(--text); border-radius: 28px; padding: 28px; text-align: center; box-shadow: 0 30px 100px rgba(0,0,0,.5); transform: rotate(-1deg); }
+    .memory-card p { color: #5e5369; }
+    .memory-icon { font-size: 3.4rem; }
+    .date { color: #d74a79; font-weight: 800; }
+
+    .progress { width: 100%; height: 10px; border-radius: 99px; background: rgba(255,255,255,.12); overflow: hidden; margin-top: 10px; }
+    .progress > div { height: 100%; width: 0; background: linear-gradient(90deg, var(--pink), #ffd25c); transition: width .4s ease; }
+
+    .final-photo-placeholder { min-height: 210px; border-radius: 22px; border: 2px dashed rgba(255,255,255,.3); display: grid; place-items: center; padding: 20px; margin: 24px 0; color: rgba(255,255,255,.65); }
+    .hearts { font-size: 2rem; animation: pulse 1.2s infinite; }
+    @keyframes pulse { 50% { transform: scale(1.18); } }
+
+    @media (max-width: 600px) {
+      .world { min-height: 520px; }
+      .hud { align-items: stretch; flex-direction: column; }
+      .moon { width: 82px; height: 82px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <main>
+    <section id="introScreen" class="screen">
+      <div class="card">
+        <div class="eyebrow">July 31 · 11:58 PM</div>
+        <h1>Pihu's Birthday Mission</h1>
+        <p>A tiny web-slinging hero has one job tonight: collect the memories, cross the city, and make the birthday girl smile.</p>
+        <div class="characters" aria-hidden="true">
+          <div class="hero"><div class="head"></div><div class="body"></div></div>
+          <div class="hearts">💞</div>
+          <div class="kitty"><div class="head"><div class="eyes"></div><div class="nose"></div><div class="bow"></div></div><div class="body"></div></div>
+        </div>
+        <button id="startBtn" class="primary">Begin the mission 🕸️</button>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="screen hidden">
+      <div class="game-shell">
+        <div class="hud">
+          <div class="pill">Mission: Find every memory</div>
+          <div class="pill"><span id="count">0</span>/5 memories found</div>
+        </div>
+        <div class="progress"><div id="progressBar"></div></div>
+
+        <div id="world" class="world" tabindex="0">
+          <div class="moon"></div>
+          <div class="city">
+            <div class="building" style="height:52%"></div><div class="building" style="height:82%"></div><div class="building" style="height:64%"></div><div class="building" style="height:95%"></div><div class="building" style="height:58%"></div><div class="building" style="height:74%"></div><div class="building" style="height:89%"></div>
+          </div>
+          <div class="ground"></div>
+          <div id="player" aria-label="player"></div>
+
+          <button class="memory" data-id="0" style="left:18%;bottom:34%">📸</button>
+          <button class="memory" data-id="1" style="left:34%;bottom:18%">🎀</button>
+          <button class="memory" data-id="2" style="left:49%;bottom:43%">🎵</button>
+          <button class="memory" data-id="3" style="left:64%;bottom:22%">🧸</button>
+          <button class="memory" data-id="4" style="left:77%;bottom:47%">💌</button>
+
+          <div id="finish" class="finish">🐱</div>
+        </div>
+
+        <div class="controls">
+          <button class="control-btn" data-move="left">←</button>
+          <button class="control-btn" data-move="up">↑</button>
+          <button class="control-btn" data-move="down">↓</button>
+          <button class="control-btn" data-move="right">→</button>
+        </div>
+        <p style="text-align:center;margin-top:10px">Use arrow keys/WASD or the buttons. Touch the floating memories.</p>
+      </div>
+    </section>
+
+    <section id="finalScreen" class="screen hidden">
+      <div class="card">
+        <div class="eyebrow">Mission complete</div>
+        <h2>You found every little piece of us.</h2>
+        <div class="final-photo-placeholder">Your favorite photo together will go here 💗</div>
+        <p>Every place, every laugh, every random conversation and every cuddle became part of my favorite story.</p>
+        <h2 style="color:#ff9fc5">Happy Birthday, Pihu ❤️</h2>
+        <p>This is only the placeholder ending. The real letter, photos, dates, inside jokes and your exact memories will replace it.</p>
+        <button id="restartBtn" class="secondary">Play again</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="memoryModal" class="modal hidden">
+    <article class="memory-card">
+      <div id="memoryIcon" class="memory-icon">📸</div>
+      <div id="memoryDate" class="date">A special date</div>
+      <h2 id="memoryTitle">A memory goes here</h2>
+      <p id="memoryText">We will replace this with one of your real memories.</p>
+      <button id="closeModal" class="primary">Keep going</button>
+    </article>
+  </div>
+
+  <script>
+    const memories = [
+      { icon: '📸', date: 'Your first special date', title: 'The beginning', text: 'Add the story of how you first met, first spoke, or first realised she was special.' },
+      { icon: '🎀', date: 'A date you never forget', title: 'Your cutest day', text: 'Add a photo and one tiny detail only the two of you would remember.' },
+      { icon: '🎵', date: 'Your song', title: 'The soundtrack of us', text: 'Add the song you associate with her and why it feels like the two of you.' },
+      { icon: '🧸', date: 'A warm little moment', title: 'The cuddle checkpoint', text: 'Add a memory about a hug, cuddle, goodbye, reunion, or moment that felt like home.' },
+      { icon: '💌', date: 'Today', title: 'One thing I need you to know', text: 'Add the most sincere sentence you want her to carry into this new year of her life.' }
+    ];
+
+    const introScreen = document.getElementById('introScreen');
+    const gameScreen = document.getElementById('gameScreen');
+    const finalScreen = document.getElementById('finalScreen');
+    const world = document.getElementById('world');
+    const player = document.getElementById('player');
+    const modal = document.getElementById('memoryModal');
+    const count = document.getElementById('count');
+    const progressBar = document.getElementById('progressBar');
+
+    let x = 40;
+    let y = 82;
+    const collected = new Set();
+
+    function show(screen) {
+      [introScreen, gameScreen, finalScreen].forEach(s => s.classList.add('hidden'));
+      screen.classList.remove('hidden');
+    }
+
+    function resetGame() {
+      x = 40; y = 82; collected.clear();
+      player.style.left = `${x}px`; player.style.bottom = `${y}px`;
+      document.querySelectorAll('.memory').forEach(m => m.classList.remove('collected'));
+      count.textContent = '0'; progressBar.style.width = '0%';
+    }
+
+    function move(dx, dy) {
+      const bounds = world.getBoundingClientRect();
+      x = Math.max(0, Math.min(bounds.width - 56, x + dx));
+      y = Math.max(72, Math.min(bounds.height - 80, y + dy));
+      player.style.left = `${x}px`;
+      player.style.bottom = `${y}px`;
+      checkCollisions();
+    }
+
+    function overlaps(a, b) {
+      return !(a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom);
+    }
+
+    function checkCollisions() {
+      const p = player.getBoundingClientRect();
+      document.querySelectorAll('.memory:not(.collected)').forEach(memory => {
+        if (overlaps(p, memory.getBoundingClientRect())) collectMemory(memory);
+      });
+
+      if (collected.size === memories.length && overlaps(p, document.getElementById('finish').getBoundingClientRect())) {
+        setTimeout(() => show(finalScreen), 250);
+      }
+    }
+
+    function collectMemory(element) {
+      const id = Number(element.dataset.id);
+      if (collected.has(id)) return;
+      collected.add(id);
+      element.classList.add('collected');
+      count.textContent = collected.size;
+      progressBar.style.width = `${(collected.size / memories.length) * 100}%`;
+
+      const memory = memories[id];
+      document.getElementById('memoryIcon').textContent = memory.icon;
+      document.getElementById('memoryDate').textContent = memory.date;
+      document.getElementById('memoryTitle').textContent = memory.title;
+      document.getElementById('memoryText').textContent = memory.text;
+      modal.classList.remove('hidden');
+    }
+
+    document.getElementById('startBtn').addEventListener('click', () => { resetGame(); show(gameScreen); world.focus(); });
+    document.getElementById('restartBtn').addEventListener('click', () => { resetGame(); show(introScreen); });
+    document.getElementById('closeModal').addEventListener('click', () => { modal.classList.add('hidden'); world.focus(); });
+
+    document.querySelectorAll('.memory').forEach(m => m.addEventListener('click', () => collectMemory(m)));
+    document.querySelectorAll('[data-move]').forEach(btn => btn.addEventListener('click', () => {
+      const dir = btn.dataset.move;
+      if (dir === 'left') move(-28, 0);
+      if (dir === 'right') move(28, 0);
+      if (dir === 'up') move(0, 28);
+      if (dir === 'down') move(0, -28);
+    }));
+
+    window.addEventListener('keydown', e => {
+      if (modal && !modal.classList.contains('hidden')) return;
+      const key = e.key.toLowerCase();
+      if (['arrowleft','a'].includes(key)) move(-28, 0);
+      if (['arrowright','d'].includes(key)) move(28, 0);
+      if (['arrowup','w'].includes(key)) move(0, 28);
+      if (['arrowdown','s'].includes(key)) move(0, -28);
+    });
+  </script>
+</body>
+</html>
