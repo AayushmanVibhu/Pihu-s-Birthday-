@@ -1,27 +1,42 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#07091b" />
-  <meta name="description" content="A cute animated rescue adventure made for Pihu's 20th birthday." />
-  <title>Hello Kitty to the Rescue</title>
-  <link rel="stylesheet" href="./game.css?v=20260730-2311" />
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hello Kitty to the Rescue</title>
+<link rel="stylesheet" href="./game.css?v=20260730-2320">
+<style>
+#root{min-height:100vh}.safe-final{position:relative;min-height:720px;overflow:hidden;border-radius:30px;background:linear-gradient(#263f7f 0 62%,#111626 62%);box-shadow:0 28px 90px #0008}.safe-final .hero{position:absolute;bottom:90px;width:180px;z-index:5}.safe-final .kitty{left:7%}.safe-final .spidey{right:7%}.safe-final .rope{position:absolute;left:72%;top:46%;height:4px;width:0;background:white;box-shadow:0 0 10px white;transform-origin:right center;z-index:4}.safe-final .heart{position:absolute;left:50%;bottom:310px;font-size:70px;opacity:0;transform:translateX(-50%) scale(.2);z-index:8}.safe-final .caption{position:absolute;left:50%;top:8%;transform:translateX(-50%);font-weight:900;font-size:clamp(1.2rem,3vw,2rem);z-index:8;text-align:center}.safe-final .letterBtn{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);opacity:0;pointer-events:none;z-index:10}.safe-final .letterBtn.show{opacity:1;pointer-events:auto}.overlay{position:absolute;inset:0;display:grid;place-items:center;background:#050716e8;z-index:20;padding:24px}.hidden{display:none!important}
+</style>
 </head>
-<body>
-  <div id="root">
-    <main style="min-height:100vh;display:grid;place-items:center;background:#07091b;color:white;font-family:system-ui;text-align:center;padding:24px">
-      <div><h1>Loading rescue mission… 🎀</h1><p>Please refresh once if this stays visible.</p></div>
-    </main>
-  </div>
-  <script>
-    window.addEventListener('error', function (event) {
-      var root = document.getElementById('root');
-      if (!root) return;
-      root.innerHTML = '<main style="min-height:100vh;display:grid;place-items:center;background:#07091b;color:white;font-family:system-ui;text-align:center;padding:24px"><div><h1>The game hit an error 💔</h1><p>' + String(event.message || 'Unknown script error') + '</p><button onclick="location.reload(true)" style="border:0;border-radius:999px;padding:14px 22px;background:#ff78b7;color:white;font-weight:800;cursor:pointer">Reload game</button></div></main>';
-    });
-  </script>
-  <script src="./game.js?v=20260730-2311"></script>
-  <script src="./finale-fix.js?v=20260730-2311"></script>
-</body>
-</html>
+<body><div id="root"></div>
+<script>
+(()=>{
+const root=document.getElementById('root');
+const Q=[
+['Hum pehli baar kab mile the?',['26 December 2022','5 March 2023','8 September 2023','13 December 2024'],0,'26 December 2022','Jab hum pehli baar mile','Uss din shayad hume bilkul idea nahi tha ki yeh ek normal meeting nahi rehne wali.'],
+['Humne numbers kab exchange kiye the?',['26 December 2022','5 March 2023','23 May 2025','8 September 2023'],1,'5 March 2023','Finally number mil gaya','Ussi din humne numbers exchange kiye… aur story aur real hone lagi.'],
+['Hamari pehli phone call mein tum aur didi kya kar rahe the?',['Birthday plan','Lecture','Ek ladki bankar prank','Song ga rahe the'],2,'8 September 2023','Hamari pehli phone call','Tum aur didi milkar mujhe prank kar rahe the aur main genuinely confuse ho gaya tha 💀'],
+['Hum officially dating kab start hue?',['13 December 2024','23 May 2025','5 March 2023','26 December 2022'],0,'13 December 2024','The day we became us','Iss din maine tumhe propose kiya… meri life ke best decisions mein se ek.'],
+['Deer Park misunderstanding mein tumne kya bola tha?',['Should I?','Shirt','Shh','Sure?'],1,'23 May 2025 · Deer Park','Shirt?','Tumne “shirt” bola, mujhe “should I?” sunayi diya… phir 3…2…1…GO ❤️'],
+['Mujhe tease karne ke liye tumne kaunsa gaana bheja tha?',['Lag Ja Gale','Buddha Mil Gaya','Pehla Nasha','Pal Pal Dil Ke Paas'],1,'The official teasing anthem','Mujhe buddha mil gaya?','Accha ji… itna bhi buddha nahi hoon 😭']];
+let q=0,lives=3,locked=false;
+const wrong=['Areee Pihu… main aur neeche aa gaya 😭','Mujhe laga tumhe yeh yaad hoga… par koi nahi 🥺','Web slip ho gaya… ek aur try, meri hero!','Main gir raha hoon… par trust tum par hi hai ❤️'];
+function kitty(blush=false){return `<div class="character kitty-char"><svg viewBox="0 0 180 220"><ellipse cx="90" cy="194" rx="47" ry="16" fill="#0003"/><path d="M54 56 38 22 72 42M126 56l16-34-34 20" fill="#fff" stroke="#2b2130" stroke-width="5"/><ellipse cx="90" cy="78" rx="59" ry="51" fill="#fff" stroke="#2b2130" stroke-width="5"/><ellipse cx="70" cy="77" rx="5" ry="8"/><ellipse cx="112" cy="77" rx="5" ry="8"/><ellipse cx="91" cy="91" rx="7" ry="5" fill="#ffd54d"/>${blush?'<ellipse cx="57" cy="98" rx="12" ry="6" fill="#ff8cab"/><ellipse cx="123" cy="98" rx="12" ry="6" fill="#ff8cab"/>':''}<path d="M78 105q13 12 27 0" fill="none" stroke="#2b2130" stroke-width="4"/><path d="M126 47c11-15 27-10 27 3 0 12-14 17-27 8-13 9-27 4-27-8 0-13 16-18 27-3Z" fill="#ff6faa" stroke="#2b2130" stroke-width="4"/><path d="M59 125q31-17 62 0l12 60H47z" fill="#ff78b7" stroke="#2b2130" stroke-width="5"/><path d="M57 139 28 164M123 139l29 25M69 184l-8 25M111 184l8 25" stroke="#2b2130" stroke-width="7" stroke-linecap="round"/></svg></div>`}
+function spidey(blush=false){return `<div class="character spidey-char"><svg viewBox="0 0 180 220"><ellipse cx="90" cy="201" rx="42" ry="13" fill="#0003"/><ellipse cx="90" cy="61" rx="39" ry="43" fill="#e83b51" stroke="#181521" stroke-width="5"/><path d="M63 51q12-13 20 4-9 31-25 8Zm54 0q-12-13-20 4 9 31 25 8Z" fill="#fff" stroke="#181521" stroke-width="4"/>${blush?'<ellipse cx="55" cy="82" rx="11" ry="6" fill="#ff9ab6"/><ellipse cx="125" cy="82" rx="11" ry="6" fill="#ff9ab6"/>':''}<path d="M90 19v83M54 41l72 42M126 41 54 83M51 62h78" stroke="#181521" stroke-width="2"/><path d="M61 103q29-18 58 0l15 68-29 20H75l-29-20z" fill="#e83b51" stroke="#181521" stroke-width="5"/><path d="M61 111 43 174M119 111l18 63M72 181l-9 29M108 181l9 29" stroke="#173c78" stroke-width="18" stroke-linecap="round"/></svg></div>`}
+function intro(){root.innerHTML=`<main class="app"><section class="screen"><div class="panel"><p class="kicker">Pihu turns 20 · Rescue Mission</p><h1 class="title"><span>Hello Kitty</span><br>to the Rescue</h1><p class="lead">Har sahi answer Kitty ko Spider-Man ke aur paas le jayega.</p><div class="duo">${kitty()}<div style="font-size:48px">💗</div>${spidey()}</div><button class="cta" id="start">Start rescue 🎀</button></div></section></main>`;start.onclick=travel}
+function travel(){root.innerHTML=`<main class="app"><section class="screen"><div class="mission"><div class="hud"><span>Running to memory ${q+1}/${Q.length}</span><span>${'❤️'.repeat(lives)}</span></div><div class="scene travel-scene city"><div class="road"></div><div class="running-kitty" id="runner">${kitty()}</div><div class="travel-caption">Run Pihu, run! 🎀</div></div></div></section></main>`;const r=document.getElementById('runner');r.animate([{transform:'translateX(-220px) translateY(0)'},{transform:'translateX(45vw) translateY(-18px)'},{transform:'translateX(88vw) translateY(0)'}],{duration:2600,easing:'linear'});setTimeout(game,2700)}
+function game(){locked=false;const x=Q[q];root.innerHTML=`<main class="app"><section class="screen"><div class="mission"><div class="hud"><span>Level ${q+1}/${Q.length}</span><span>${'❤️'.repeat(lives)}${'🖤'.repeat(3-lives)}</span></div><div class="scene city" id="scene"><div class="character-strip"><div>${kitty()}</div><div class="distance-line"><i style="width:${20+q*14}%"></i></div><div>${spidey()}</div></div><div class="quiz-card"><p class="kicker">Memory Check</p><h2>${x[0]}</h2><div class="choices">${x[1].map((o,i)=>`<button class="choice" data-i="${i}">${o}</button>`).join('')}</div></div></div></div></section></main>`;document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>answer(+b.dataset.i,b))}
+function answer(i,b){if(locked)return;locked=true;const x=Q[q];if(i===x[2]){b.classList.add('correct');setTimeout(()=>reveal(x),500)}else{b.classList.add('wrong');lives--;const line=wrong[(q+lives+4)%wrong.length];const e=document.createElement('div');e.className='emotional-line';e.innerHTML=`<b>Wrong answer 💔</b><span>${line}</span>`;scene.appendChild(e);setTimeout(()=>{if(lives<=0){lives=3;q=0}travel()},2100)}}
+function reveal(x){const o=document.createElement('div');o.className='memory-reveal';o.innerHTML=`<article class="memory-card"><div class="cute-break">✨ 🎀 💗</div><p class="date">${x[3]}</p><h2>${x[4]}</h2><p>${x[5]}</p><button class="cta" id="next">Next destination</button></article>`;scene.appendChild(o);next.onclick=()=>{q++;q>=Q.length?finale():travel()}}
+function finale(){root.innerHTML=`<main class="app"><section class="screen"><div class="mission"><div class="safe-final" id="final"><div class="caption">MISSION COMPLETE 💗</div><div class="rope" id="rope"></div><div class="hero kitty" id="fk">${kitty(true)}</div><div class="hero spidey" id="fs">${spidey(true)}</div><div class="heart" id="heart">💗</div><button class="cta letterBtn" id="letterBtn">Open birthday letter 💌</button><div class="overlay hidden" id="overlay"><article class="letter"><h2>Spider-Man saved. Birthday girl victorious. 💗</h2><p>You crossed every memory, reached me, and saved the day. Happy birthday, Pihu.</p><button class="cta" id="again">Play again</button></article></div></div></div></section></main>`;
+const k=document.getElementById('fk'),s=document.getElementById('fs'),r=document.getElementById('rope'),h=document.getElementById('heart');
+r.animate([{width:'0'},{width:'58%'}],{duration:700,fill:'forwards',easing:'ease-out'});
+setTimeout(()=>k.animate([{left:'7%'},{left:'56%'}],{duration:1300,fill:'forwards',easing:'cubic-bezier(.2,.8,.2,1)'}),700);
+setTimeout(()=>{k.animate([{transform:'rotate(0)'},{transform:'rotate(8deg) translateX(24px)'}],{duration:500,fill:'forwards'});s.animate([{transform:'rotate(0)'},{transform:'rotate(-8deg) translateX(-24px)'}],{duration:500,fill:'forwards'});},2200);
+setTimeout(()=>h.animate([{opacity:0,transform:'translateX(-50%) scale(.2)'},{opacity:1,transform:'translateX(-50%) scale(1.4)'},{opacity:0,transform:'translateX(-50%) translateY(-90px) scale(.7)'}],{duration:1500,fill:'forwards'}),2800);
+setTimeout(()=>{k.animate([{left:'56%'},{left:'49%'}],{duration:550,fill:'forwards'});s.animate([{right:'7%'},{right:'34%'}],{duration:550,fill:'forwards'});confetti();},3800);
+setTimeout(()=>letterBtn.classList.add('show'),4700);letterBtn.onclick=()=>overlay.classList.remove('hidden');document.addEventListener('click',e=>{if(e.target.id==='again'){q=0;lives=3;intro()}},{once:false})}
+function confetti(){for(let i=0;i<90;i++){const p=document.createElement('div');p.textContent=['💗','🎀','✨','🌸'][i%4];Object.assign(p.style,{position:'fixed',left:Math.random()*100+'vw',top:'-40px',zIndex:99,fontSize:(16+Math.random()*20)+'px'});document.body.appendChild(p);p.animate([{transform:'translateY(0) rotate(0)'},{transform:'translateY(110vh) rotate(720deg)'}],{duration:3000+Math.random()*2500,delay:Math.random()*1000});setTimeout(()=>p.remove(),6500)}}
+intro();
+})();
+</script></body></html>
