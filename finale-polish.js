@@ -18,14 +18,17 @@
     const kitty=final.querySelector('#fk');
     const kuku=final.querySelector('#fs');
     const heart=final.querySelector('#heart');
+    const letter=final.querySelector('#letter');
     if(!web||!kitty||!kuku)return;
 
     if(caption)caption.textContent='Kuku ki web aa rahi hai… 💗';
     kuku.setAttribute('aria-label','Kuku');
     kuku.title='Kuku';
 
-    /* Let game.js create its animations, then cancel them ONCE.
-       The old patch repeatedly cancelled every animation, including its own. */
+    /* Keep decorative finale elements from blocking the letter button. */
+    if(heart)heart.style.pointerEvents='none';
+
+    /* Let game.js create its animations, then cancel them ONCE. */
     await wait(80);
     [web,kitty,kuku,heart].forEach(el=>el&&el.getAnimations().forEach(a=>a.cancel()));
 
@@ -64,7 +67,6 @@
     play(web,[{opacity:1},{opacity:0}],{duration:300,fill:'forwards'});
     if(caption)caption.textContent='Aur phir… bilkul paas 🥹';
 
-    /* Final overlap: their bodies occupy nearly the same horizontal area. */
     play(kitty,[
       {left:'43%',transform:'translateY(0) rotate(8deg) scale(1.07)'},
       {left:'44.5%',transform:'translateX(20px) translateY(-3px) rotate(12deg) scale(1.1)'}
@@ -84,6 +86,7 @@
     const hearts=document.createElement('div');
     hearts.className='reunion-hearts';
     hearts.textContent='💗 ✨ 💗';
+    hearts.style.pointerEvents='none';
     final.appendChild(hearts);
     play(hearts,[
       {opacity:0,transform:'translateX(-50%) translateY(15px) scale(.5)'},
@@ -94,6 +97,15 @@
     await wait(550);
     final.classList.add('reunion-complete');
     if(caption)caption.textContent='Mission complete — Pihu aur Kuku together 💗';
+
+    /* Preserve game.js's original onclick handler; only restore visibility/clickability. */
+    if(letter){
+      letter.classList.add('show');
+      letter.style.setProperty('opacity','1','important');
+      letter.style.setProperty('pointer-events','auto','important');
+      letter.style.setProperty('z-index','1000','important');
+      letter.disabled=false;
+    }
 
     const renameLetter=()=>{
       const card=final.querySelector('.ui .card');
