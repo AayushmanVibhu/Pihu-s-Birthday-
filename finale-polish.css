@@ -1,49 +1,73 @@
-/* Finale polish: Kuku reunion */
+/* Finale polish: one controlled close reunion */
 #final .hero.kitty,
 #final .hero.spidey {
-  bottom: 76px !important;
+  bottom: 70px !important;
   width: min(25vw, 180px) !important;
-  transform-origin: 50% 85% !important;
+  transform-origin: 50% 82% !important;
   will-change: left, transform !important;
+  z-index: 8 !important;
 }
-#final .hero.kitty { left: 42.5% !important; }
-#final .hero.spidey { left: 50.5% !important; }
+
 #final .hero.kitty .char,
-#final .hero.spidey .char { filter: drop-shadow(0 12px 12px rgba(0,0,0,.25)); }
+#final .hero.spidey .char {
+  filter: drop-shadow(0 12px 12px rgba(0,0,0,.25));
+}
+
+#final .websvg {
+  z-index: 7 !important;
+  pointer-events: none;
+}
+
 #final .webpath {
   stroke-linecap: round;
   stroke-linejoin: round;
-  filter: drop-shadow(0 0 5px rgba(255,255,255,.7));
+  filter: drop-shadow(0 0 6px rgba(255,255,255,.85));
 }
-#final .heart { z-index: 12 !important; pointer-events: none; }
-#final .caption { z-index: 15; }
-@keyframes kukuCuddle {
-  0% { transform: translateX(0) rotate(0deg) scale(1); }
-  55% { transform: translateX(15px) rotate(-5deg) scale(1.02); }
-  75% { transform: translateX(22px) rotate(-8deg) scale(1.04); }
-  100% { transform: translateX(25px) rotate(-6deg) scale(1.03); }
+
+#final .heart {
+  z-index: 15 !important;
+  pointer-events: none;
 }
-@keyframes pihuCuddle {
-  0% { transform: translateX(0) rotate(0deg) scale(1); }
-  55% { transform: translateX(-15px) rotate(5deg) scale(1.02); }
-  75% { transform: translateX(-22px) rotate(8deg) scale(1.04); }
-  100% { transform: translateX(-25px) rotate(6deg) scale(1.03); }
+
+#final .caption {
+  z-index: 16 !important;
 }
-@keyframes reunionBounce {
-  0%,100% { translate: 0 0; }
-  45% { translate: 0 -8px; }
+
+#final .reunion-hearts {
+  position: absolute;
+  left: 50%;
+  bottom: 265px;
+  z-index: 17;
+  transform: translateX(-50%);
+  font-size: clamp(24px, 4vw, 46px);
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
 }
-#final.kuku-reunion .hero.kitty .char {
-  animation: kukuCuddle 1.25s cubic-bezier(.22,.9,.28,1) forwards,
-             reunionBounce .72s ease-in-out 1.3s 2;
+
+#final.reunion-complete .hero.kitty,
+#final.reunion-complete .hero.spidey {
+  filter: drop-shadow(0 0 18px rgba(255,126,184,.35));
 }
-#final.kuku-reunion .hero.spidey .char {
-  animation: pihuCuddle 1.25s cubic-bezier(.22,.9,.28,1) forwards,
-             reunionBounce .72s ease-in-out 1.3s 2;
+
+#final.reunion-complete .hero.kitty .char,
+#final.reunion-complete .hero.spidey .char {
+  animation: closeCuddleBounce .82s ease-in-out infinite alternate;
 }
+
+@keyframes closeCuddleBounce {
+  from { translate: 0 0; }
+  to { translate: 0 -5px; }
+}
+
 @media (max-width: 650px) {
   #final .hero.kitty,
-  #final .hero.spidey { width: 145px !important; bottom: 74px !important; }
-  #final .hero.kitty { left: 33% !important; }
-  #final .hero.spidey { left: 47% !important; }
+  #final .hero.spidey {
+    width: 142px !important;
+    bottom: 68px !important;
+  }
+
+  #final .reunion-hearts {
+    bottom: 230px;
+  }
 }
