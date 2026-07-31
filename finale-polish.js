@@ -24,11 +24,8 @@
     if(caption)caption.textContent='Kuku ki web aa rahi hai… 💗';
     kuku.setAttribute('aria-label','Kuku');
     kuku.title='Kuku';
-
-    /* Keep decorative finale elements from blocking the letter button. */
     if(heart)heart.style.pointerEvents='none';
 
-    /* Let game.js create its animations, then cancel them ONCE. */
     await wait(80);
     [web,kitty,kuku,heart].forEach(el=>el&&el.getAnimations().forEach(a=>a.cancel()));
 
@@ -98,24 +95,24 @@
     final.classList.add('reunion-complete');
     if(caption)caption.textContent='Mission complete — Pihu aur Kuku together 💗';
 
-    /* Preserve game.js's original onclick handler; only restore visibility/clickability. */
     if(letter){
       letter.classList.add('show');
       letter.style.setProperty('opacity','1','important');
       letter.style.setProperty('pointer-events','auto','important');
       letter.style.setProperty('z-index','1000','important');
       letter.disabled=false;
-    }
 
-    const renameLetter=()=>{
-      const card=final.querySelector('.ui .card');
-      if(!card)return;
-      const heading=card.querySelector('h2');
-      if(heading)heading.textContent='Kuku bach gaya. Aur meri hero tu nikli. 💗';
-      const paragraphs=card.querySelectorAll('p');
-      if(paragraphs[1])paragraphs[1].textContent='Tune har yaad wapas laayi, har gate cross kiya, aur aakhir mein apne Kuku ke bilkul paas pahunch gayi.';
-    };
-    new MutationObserver(renameLetter).observe(final,{childList:true,subtree:true});
+      letter.addEventListener('click',()=>{
+        setTimeout(()=>{
+          const card=final.querySelector('.ui .card');
+          if(!card)return;
+          const heading=card.querySelector('h2');
+          if(heading)heading.textContent='Kuku bach gaya. Aur meri hero tu nikli. 💗';
+          const paragraphs=card.querySelectorAll('p');
+          if(paragraphs[1])paragraphs[1].textContent='Tune har yaad wapas laayi, har gate cross kiya, aur aakhir mein apne Kuku ke bilkul paas pahunch gayi.';
+        },50);
+      },{once:true});
+    }
   }
 
   new MutationObserver(()=>{
