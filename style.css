@@ -1,0 +1,79 @@
+:root{--p:#ff72b5;--h:#ff3e7d;--c:#fffaf5;--i:#2f2038;--g:#ffd86b}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,ui-rounded,system-ui,sans-serif;background:#07091b;color:#fff;touch-action:none}
+button{font:inherit}
+.app{min-height:100vh;background:radial-gradient(circle at 70% 8%,#36549b 0,#17204c 30%,#07091b 72%);overflow:hidden}
+.screen{min-height:100vh;display:grid;place-items:center;padding:18px}
+.panel,.mission{width:min(1100px,96vw)}
+.panel{padding:clamp(25px,5vw,56px);border-radius:32px;text-align:center;background:#080d24e8;border:1px solid #ffffff24;box-shadow:0 30px 90px #0009}
+.k{letter-spacing:.18em;color:#ffc6df;font-size:.75rem;font-weight:900;text-transform:uppercase}
+.title{font-size:clamp(2.7rem,8vw,6rem);line-height:.93;margin:12px 0}
+.title span{color:var(--p)}
+.lead{max-width:760px;margin:0 auto;color:#ffffffd6;line-height:1.7}
+.cta,.choice{border:0;border-radius:999px;padding:14px 22px;font-weight:900;cursor:pointer}
+.cta{color:#fff;background:linear-gradient(135deg,var(--p),var(--h));box-shadow:0 12px 30px #ff3e7d44}
+.choice{width:100%;text-align:left;background:#fff;color:#392942;border:2px solid #efc4d8}
+.choice.correct{background:#ddf8e7;border-color:#58c883}
+.choice.wrong{background:#ffe1e7;border-color:#ed7087}
+.duo{display:flex;align-items:end;justify-content:center;gap:30px;margin:30px 0}
+.char{width:145px;height:185px;filter:drop-shadow(0 18px 18px #0008)}
+.char svg{width:100%;height:100%;overflow:visible}
+.sound{position:fixed;right:16px;top:16px;z-index:500;width:50px;height:50px;border-radius:50%;border:1px solid #ffffff30;background:#0a1028df;color:#fff;font-size:1.25rem;cursor:pointer}
+.hud{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;padding:12px 16px;border-radius:999px;background:#ffffff12;border:1px solid #ffffff20}
+.stage{position:relative;height:min(72vh,690px);min-height:590px;border-radius:30px;overflow:hidden;border:1px solid #ffffff22;box-shadow:0 28px 90px #0009}
+.world{position:absolute;inset:0;background:linear-gradient(#274680 0 58%,#121a32 58%)}
+.world.park{background:linear-gradient(#6a4b78 0 54%,#293d39 54%)}
+.world.call{background:linear-gradient(#173b61 0 55%,#192238 55%)}
+.world.rooftop{background:linear-gradient(#294683 0 62%,#111626 62%)}
+.moon{position:absolute;width:110px;height:110px;border-radius:50%;right:8%;top:8%;background:#fff1b2;box-shadow:0 0 70px #fff1b266}
+.cloud{position:absolute;width:175px;height:44px;border-radius:999px;background:#ffffff20;animation:cloud 16s linear infinite}
+.cloud:before,.cloud:after{content:"";position:absolute;border-radius:50%;background:inherit}
+.cloud:before{width:68px;height:68px;left:25px;top:-28px}
+.cloud:after{width:78px;height:78px;right:24px;top:-34px}
+@keyframes cloud{from{transform:translateX(-250px)}to{transform:translateX(1250px)}}
+.buildings{position:absolute;left:0;right:0;bottom:90px;height:250px;background:repeating-linear-gradient(90deg,#0d1631 0 90px,#18264a 90px 155px,#101b38 155px 250px);opacity:.95}
+.tree{position:absolute;bottom:88px;width:100px;height:225px;background:#17291f;border-radius:60% 60% 8px 8px}
+.road{position:absolute;left:0;right:0;bottom:0;height:90px;background:linear-gradient(#293452,#111829);border-top:3px solid #ffffff18}
+.road:after{content:"";position:absolute;left:0;right:0;top:44px;height:5px;background:repeating-linear-gradient(90deg,#fff8 0 42px,transparent 42px 85px);animation:road 1s linear infinite}
+@keyframes road{to{background-position:-170px 0}}
+.player{position:absolute;left:6%;bottom:72px;z-index:8;transition:transform .08s linear}
+.player.running .char{animation:run .22s ease-in-out infinite alternate}
+@keyframes run{to{transform:translateY(-10px) rotate(3deg)}}
+.obstacle{position:absolute;right:13%;bottom:90px;z-index:7;width:110px;height:180px;display:grid;place-items:end center}
+.gate{width:95px;height:145px;border:9px solid #763f91;border-bottom:0;border-radius:45px 45px 0 0;box-shadow:0 0 25px #d381ff88;background:#240e35aa}
+.gate:after{content:'🔒';position:absolute;top:54px;font-size:36px}
+.crystal{position:absolute;right:8%;bottom:170px;z-index:9;font-size:44px;filter:drop-shadow(0 0 12px #8be9ff);animation:float 1.2s ease-in-out infinite alternate}
+@keyframes float{to{transform:translateY(-12px)}}
+.hint{position:absolute;z-index:20;left:50%;top:8%;transform:translateX(-50%);padding:10px 16px;border-radius:999px;background:#090d25d9;border:1px solid #ffffff26;font-weight:900;text-align:center}
+.dialogue{position:absolute;z-index:20;right:5%;top:18%;max-width:250px;padding:12px 15px;border-radius:18px;background:#fff;color:#31213a;font-weight:800;box-shadow:0 14px 35px #0007}
+.controls{position:absolute;z-index:30;left:18px;right:18px;bottom:14px;display:flex;justify-content:space-between;pointer-events:none}
+.pad{display:flex;gap:12px;pointer-events:auto}
+.ctrl{width:66px;height:58px;border:1px solid #ffffff30;border-radius:20px;background:#0c1230d9;color:#fff;font-size:1.5rem;font-weight:900;user-select:none}
+.action{width:auto;padding:0 20px;font-size:1rem}
+.ui{position:absolute;inset:0;z-index:100;display:grid;place-items:center;padding:22px;background:#07091bb5}
+.card{width:min(720px,94%);padding:26px;border-radius:28px;background:#fffaf5;color:var(--i);box-shadow:0 28px 75px #000b;text-align:center}
+.card h2{font-size:clamp(1.45rem,3vw,2.15rem);margin:10px 0 20px}
+.choices{display:grid;gap:11px}
+.hidden{display:none!important}
+.caption{position:absolute;z-index:20;top:6%;left:50%;transform:translateX(-50%);font-size:clamp(1.3rem,3vw,2.1rem);font-weight:900;text-align:center}
+.hero{position:absolute;bottom:88px;width:165px;z-index:8}
+.hero.kitty{left:8%}
+.hero.spidey{right:8%}
+.websvg{position:absolute;inset:0;z-index:7;width:100%;height:100%;pointer-events:none}
+.webpath{stroke:#fff;stroke-width:4;stroke-linecap:round;filter:drop-shadow(0 0 5px #fff);stroke-dasharray:1000;stroke-dashoffset:1000}
+.heart{position:absolute;z-index:12;left:50%;bottom:280px;font-size:72px;opacity:0;transform:translateX(-50%) scale(.2)}
+.letterbtn{position:absolute;z-index:14;left:50%;bottom:16px;transform:translateX(-50%);opacity:0;pointer-events:none}
+.letterbtn.show{opacity:1;pointer-events:auto}
+@media(max-width:700px){
+.stage{height:76vh;min-height:620px}
+.char{width:105px;height:140px}
+.player{bottom:75px}
+.obstacle{right:10%;bottom:90px;transform:scale(.85)}
+.ctrl{width:62px;height:54px}
+.dialogue{top:14%;right:3%;font-size:.8rem}
+.hero{width:115px}
+.hero.kitty{left:2%}
+.hero.spidey{right:2%}
+.heart{bottom:230px}
+.controls{bottom:10px}
+}
