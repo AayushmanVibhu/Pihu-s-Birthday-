@@ -1,11 +1,10 @@
-/* Finale polish: one controlled close reunion */
+/* Lightweight finale styling. All interaction remains owned by game.js. */
 #final .hero.kitty,
 #final .hero.spidey {
-  bottom: 70px !important;
-  width: min(25vw, 180px) !important;
-  transform-origin: 50% 82% !important;
-  will-change: left, transform !important;
-  z-index: 8 !important;
+  bottom: 70px;
+  width: min(25vw, 180px);
+  transform-origin: 50% 82%;
+  z-index: 8;
 }
 
 #final .hero.kitty .char,
@@ -13,8 +12,9 @@
   filter: drop-shadow(0 12px 12px rgba(0,0,0,.25));
 }
 
-#final .websvg {
-  z-index: 7 !important;
+#final .websvg,
+#final .heart,
+#final .reunion-hearts {
   pointer-events: none;
 }
 
@@ -24,50 +24,15 @@
   filter: drop-shadow(0 0 6px rgba(255,255,255,.85));
 }
 
-#final .heart {
-  z-index: 15 !important;
-  pointer-events: none;
-}
-
-#final .caption {
-  z-index: 16 !important;
-}
-
-#final .reunion-hearts {
-  position: absolute;
-  left: 50%;
-  bottom: 265px;
-  z-index: 17;
-  transform: translateX(-50%);
-  font-size: clamp(24px, 4vw, 46px);
-  opacity: 0;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
 #final.reunion-complete .hero.kitty,
 #final.reunion-complete .hero.spidey {
   filter: drop-shadow(0 0 18px rgba(255,126,184,.35));
 }
 
-#final.reunion-complete .hero.kitty .char,
-#final.reunion-complete .hero.spidey .char {
-  animation: closeCuddleBounce .82s ease-in-out infinite alternate;
-}
-
-@keyframes closeCuddleBounce {
-  from { translate: 0 0; }
-  to { translate: 0 -5px; }
-}
-
-@media (max-width: 650px) {
+@media (max-width:650px) {
   #final .hero.kitty,
   #final .hero.spidey {
-    width: 142px !important;
-    bottom: 68px !important;
-  }
-
-  #final .reunion-hearts {
-    bottom: 230px;
+    width: 115px;
+    bottom: 68px;
   }
 }
