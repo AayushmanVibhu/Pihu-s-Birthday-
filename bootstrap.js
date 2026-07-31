@@ -67,7 +67,7 @@
 
       if(!safeMode){
         loadScript('./gate-fix.js?v=4');
-        loadScript('./finale-polish.js?v=2');
+        loadScript('./finale-polish.js?v=3');
       }
     })
     .catch(recovery);
